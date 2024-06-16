@@ -1,0 +1,87 @@
+//creating a travel planner
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_TRIPS 100
+#define MAX_LENGTH 100
+
+typedef struct {
+    char destination[MAX_LENGTH];
+    char startDate[MAX_LENGTH];
+    char endDate[MAX_LENGTH];
+    char notes[MAX_LENGTH];
+} Trip;
+
+void addTrip(Trip trips[], int *tripCount) {
+    if (*tripCount >= MAX_TRIPS) {
+        printf("Maximum trip limit reached.\n");
+        return;
+    }
+
+    printf("Enter destination: ");
+    fgets(trips[*tripCount].destination, MAX_LENGTH, stdin);
+    trips[*tripCount].destination[strcspn(trips[*tripCount].destination, "\n")] = '\0';
+
+    printf("Enter start date (DD/MM/YYYY): ");
+    fgets(trips[*tripCount].startDate, MAX_LENGTH, stdin);
+    trips[*tripCount].startDate[strcspn(trips[*tripCount].startDate, "\n")] = '\0';
+
+    printf("Enter end date (DD/MM/YYYY): ");
+    fgets(trips[*tripCount].endDate, MAX_LENGTH, stdin);
+    trips[*tripCount].endDate[strcspn(trips[*tripCount].endDate, "\n")] = '\0';
+
+    printf("Enter notes: ");
+    fgets(trips[*tripCount].notes, MAX_LENGTH, stdin);
+    trips[*tripCount].notes[strcspn(trips[*tripCount].notes, "\n")] = '\0';
+
+    (*tripCount)++;
+}
+
+void displayTrips(Trip trips[], int tripCount) {
+    if (tripCount == 0) {
+        printf("No trips planned.\n");
+        return;
+    }
+
+    for (int i = 0; i < tripCount; i++) {
+        printf("Trip %d:\n", i + 1);
+        printf("Destination: %s\n", trips[i].destination);
+        printf("Start Date: %s\n", trips[i].startDate);
+        printf("End Date: %s\n", trips[i].endDate);
+        printf("Notes: %s\n", trips[i].notes);
+        printf("\n");
+    }
+}
+
+int main() {
+    Trip trips[MAX_TRIPS];
+    int tripCount = 0;
+    int choice;
+
+    while (1) {
+        printf("Travel Planner Menu:\n");
+        printf("1. Add Trip\n");
+        printf("2. Display Trips\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+        getchar(); // To consume the newline character after the integer input
+
+        switch (choice) {
+            case 1:
+                addTrip(trips, &tripCount);
+                break;
+            case 2:
+                displayTrips(trips, tripCount);
+                break;
+            case 3:
+                printf("Exiting the Travel Planner.\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
